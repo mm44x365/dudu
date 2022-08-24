@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/localization/{language}', App\Http\Controllers\LocalizationController::class)->name('localization.switch');
+
 Route::get('/', function () {
     return view('welcome');
 });
