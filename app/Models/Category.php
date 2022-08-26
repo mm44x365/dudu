@@ -9,6 +9,11 @@ class Category extends Model
 {
     use HasFactory;
 
+    public function scopeOnlyParent($query)
+    {
+        return $query->whereNull('parent_id');
+    }
+
     public function childern()
     {
         return $this->hasMany(self::class, 'parent_id');
