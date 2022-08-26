@@ -27,4 +27,5 @@ Auth::routes([
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['web', 'auth']], function () {
     Route::get('/', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');
+    Route::resource('/categories', \App\Http\Controllers\CategoryController::class);
 });
