@@ -10,6 +10,11 @@ Breadcrumbs::for('dashboard_home', function ($trail) {
     $trail->push('Home', route('dashboard.index'));
 });
 
+Breadcrumbs::for('categories', function ($trail) {
+    $trail->parent('dashboard');
+    $trail->push('Categories', route('categories.index'));
+});
+
 // // Home > About
 // Breadcrumbs::for('about', function ($trail) {
 //     $trail->parent('home');
