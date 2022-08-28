@@ -1,7 +1,5 @@
 <?php
 
-use GuzzleHttp\Middleware;
-use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/localization/{language}', [\App\Http\Controllers\LocalizationController::class, 'switch'])->name('localization.switch');
+Route::get(
+    '/localization/{language}',
+    [\App\Http\Controllers\LocalizationController::class, 'switch']
+)->name('localization.switch');
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,8 +27,9 @@ Auth::routes([
 ]);
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['web', 'auth']], function () {
+    //dashboard
     Route::get('/', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');
-    // Categories
+    //categories
     Route::get('/categories/select', [\App\Http\Controllers\CategoryController::class, 'select'])->name('categories.select');
     Route::resource('/categories', \App\Http\Controllers\CategoryController::class);
 });
