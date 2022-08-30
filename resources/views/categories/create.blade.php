@@ -13,15 +13,21 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="" method="POST">
+                    <form action="{{ route('categories.store') }}" method="POST">
+                        @csrf
                         <!-- title -->
                         <div class="form-group">
                             <label for="input_category_title" class="font-weight-bold">
                                 {{ trans('categories.form_control.input.title.label') }}
                             </label>
                             <input id="input_category_title" value="" name="title" type="text"
-                                class="form-control"
+                                class="form-control  @error('title') is-invalid @enderror"
                                 placeholder="{{ trans('categories.form_control.input.title.placeholder') }}" />
+                            @error('title')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                         <!-- slug -->
                         <div class="form-group">
@@ -29,8 +35,13 @@
                                 {{ trans('categories.form_control.input.slug.label') }}
                             </label>
                             <input id="input_category_slug" value="" name="slug" type="text"
-                                class="form-control"
+                                class="form-control @error('slug') is-invalid @enderror"
                                 placeholder="{{ trans('categories.form_control.input.slug.placeholder') }}" readonly />
+                            @error('slug')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                         <!-- thumbnail -->
                         <div class="form-group">
@@ -40,16 +51,22 @@
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <button id="button_category_thumbnail" data-input="input_category_thumbnail"
-                                        class="btn btn-primary" type="button">
+                                        data-preview="holder" class="btn btn-primary" type="button">
                                         {{ trans('categories.button.browse.value') }}
                                     </button>
                                 </div>
                                 <input id="input_category_thumbnail" name="thumbnail" value="" type="text"
-                                    class="form-control"
+                                    class="form-control @error('thumbnail') is-invalid @enderror"
                                     placeholder="{{ trans('categories.form_control.input.thumbnail.placeholder') }}"
                                     readonly />
+                                @error('thumbnail')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                         </div>
+                        <div id="holder"></div>
                         <!-- parent_category -->
                         <div class="form-group">
                             <label for="select_category_parent"
@@ -64,8 +81,13 @@
                             <label for="input_category_description" class="font-weight-bold">
                                 {{ trans('categories.form_control.textarea.description.label') }}
                             </label>
-                            <textarea id="input_category_description" name="description" class="form-control" rows="3"
-                                placeholder="{{ trans('categories.form_control.textarea.description.placeholder') }}"></textarea>
+                            <textarea id="input_category_description" name="description" class="form-control @error('title') is-invalid @enderror"
+                                rows="3" placeholder="{{ trans('categories.form_control.textarea.description.placeholder') }}"></textarea>
+                            @error('description')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                         <div class="float-right">
                             <a class="btn btn-warning px-4"
@@ -87,6 +109,8 @@
 @push('javascript-external')
     <script src="{{ asset('vendor/select2/js/select2.min.js') }}"></script>
     <script src="{{ asset('vendor/select2/js/i18n/' . app()->getLocale() . '.js') }}"></script>
+    {{-- laravel-filemanager --}}
+    <script src="{{ asset('vendor/laravel-filemanager/js/stand-alone-button.js') }}"></script>
 @endpush
 
 @push('javascript-internal')
@@ -135,6 +159,10 @@
                 let parent_category = $(this).val() ?? " ";
                 $('#input_category_slug').val(generateSlug(title + " " + parent_category));
             });
+
+            // event thumbnail
+            $('#button_category_thumbnail').filemanager('image');
+
         });
     </script>
 @endpush
