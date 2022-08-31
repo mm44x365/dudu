@@ -51,6 +51,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        // cek validasi inputan data
         $validator = Validator::make(
             $request->all(),
             [
@@ -60,10 +61,29 @@ class CategoryController extends Controller
                 'description' => 'required|string|max:240',
             ],
             [],
-            $this->attributes()
+            $this->attributes() //kirim atribut dari method bahasa dibawah
         );
 
+        // jika validasi ada yang salah
         if ($validator->fails()) {
+            if ($request->has('parent_category')) {
+                $request['parent_category'] = Category::select('id', 'title')->find($request->parent_category);
+            }
+            return redirect()->back()->withInput($request->all())->withErrors($validator);
+        }
+
+        // coba input data
+        try {
+            Category::create([
+                'title' => $request->title,
+                'slug' => $request->slug,
+                'thumbnail' => parse_url($request->thumbnail)['path'],
+                'description' => $request->description,
+                'parent_id' => $request->parent_category
+            ]);
+            // jika berhasil arahkan ke
+            return redirect()->route('categories.index');
+        } catch (\Throwable $th) {
             if ($request->has('parent_category')) {
                 $request['parent_category'] = Category::select('id', 'title')->find($request->parent_category);
             }
