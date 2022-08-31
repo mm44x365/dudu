@@ -10,14 +10,27 @@ Breadcrumbs::for('dashboard_home', function ($trail) {
     $trail->push('Home', route('dashboard.index'));
 });
 
+// Dashboard > Categories
 Breadcrumbs::for('categories', function ($trail) {
     $trail->parent('dashboard');
     $trail->push('Categories', route('categories.index'));
 });
-
+// Dashboard > Categories > Create
 Breadcrumbs::for('add_category', function ($trail) {
     $trail->parent('categories');
     $trail->push('Add', route('categories.create'));
+});
+
+// Dashboard > Categories > Edit
+Breadcrumbs::for('edit_category', function ($trail, $category) {
+    $trail->parent('categories');
+    $trail->push('Edit', route('categories.edit', ['category' => $category]));
+});
+
+// Dashboard > Categories > Edit > [title]
+Breadcrumbs::for('edit_category_title', function ($trail, $category) {
+    $trail->parent('edit_category', $category);
+    $trail->push($category->title, route('categories.edit', ['category' => $category]));
 });
 
 // // Home > About
