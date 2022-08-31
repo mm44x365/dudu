@@ -6,6 +6,7 @@ use App\Models\Category;
 // use Dotenv\Validator;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Alert;
 
 class CategoryController extends Controller
 {
@@ -69,6 +70,7 @@ class CategoryController extends Controller
             if ($request->has('parent_category')) {
                 $request['parent_category'] = Category::select('id', 'title')->find($request->parent_category);
             }
+            Alert::toast(trans('categories.alert.required.message.error'), 'error');
             return redirect()->back()->withInput($request->all())->withErrors($validator);
         }
 
@@ -82,11 +84,13 @@ class CategoryController extends Controller
                 'parent_id' => $request->parent_category
             ]);
             // jika berhasil arahkan ke
+            Alert::toast(trans('categories.alert.create.message.success'), 'success');
             return redirect()->route('categories.index');
         } catch (\Throwable $th) {
             if ($request->has('parent_category')) {
                 $request['parent_category'] = Category::select('id', 'title')->find($request->parent_category);
             }
+            Alert::toast(trans('categories.alert.create.message.error', ['error' => $th->getMessage()]), 'error');
             return redirect()->back()->withInput($request->all())->withErrors($validator);
         }
     }

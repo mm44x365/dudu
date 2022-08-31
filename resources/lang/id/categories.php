@@ -78,6 +78,12 @@ return [
                 'error' => "Terjadi kesalahan saat menyimpan kategori. :error"
             ]
         ],
+        'required' => [
+            'title' => 'Add category',
+            'message' => [
+                'error' => "Periksa inputan wajib diisi."
+            ]
+        ],
         'update' => [
             'title' => 'Ubah kategori',
             'message' => [

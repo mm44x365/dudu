@@ -78,6 +78,12 @@ return [
                 'error' => "An error occurred while saving the category. :error"
             ]
         ],
+        'required' => [
+            'title' => 'Add category',
+            'message' => [
+                'error' => "Please check required input."
+            ]
+        ],
         'update' => [
             'title' => 'Edit category',
             'message' => [
