@@ -126,7 +126,27 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        // cek validasi inputan data
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'title' => 'required|string|max:60',
+                'slug' => 'required|string|unique:categories,slug,' . $category->id,
+                'thumbnail' => 'required',
+                'description' => 'required|string|max:240',
+            ],
+            [],
+            $this->attributes() //kirim atribut dari method bahasa dibawah
+        );
+
+        // jika validasi ada yang salah
+        if ($validator->fails()) {
+            if ($request->has('parent_category')) {
+                $request['parent_category'] = Category::select('id', 'title')->find($request->parent_category);
+            }
+            Alert::toast(trans('categories.alert.required.message.error'), 'error');
+            return redirect()->back()->withInput($request->all())->withErrors($validator);
+        }
     }
 
     /**
