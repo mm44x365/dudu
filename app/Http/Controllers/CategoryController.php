@@ -177,7 +177,14 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        try {
+            $category->delete();
+            Alert::toast(trans('categories.alert.delete.message.success'), 'success');
+        } catch (\Throwable $th) {
+            Alert::toast(trans('categories.alert.delete.message.error', ['error' => $th->getMessage()]), 'error');
+        }
+
+        return redirect()->back();
     }
 
     private function attributes()

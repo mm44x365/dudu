@@ -67,7 +67,7 @@
                         confirmButtonText: $(this).attr('alert-btn-yes'),
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // todo: process of deleting categories
+                            event.target.submit();
                         }
                     });
                 }
