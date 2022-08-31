@@ -81,7 +81,7 @@ return [
         'required' => [
             'title' => 'Add category',
             'message' => [
-                'error' => "Please check required input."
+                'error' => "Please check all input."
             ]
         ],
         'update' => [

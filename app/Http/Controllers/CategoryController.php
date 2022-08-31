@@ -74,7 +74,7 @@ class CategoryController extends Controller
             return redirect()->back()->withInput($request->all())->withErrors($validator);
         }
 
-        // coba input data
+        // coba simpan data
         try {
             Category::create([
                 'title' => $request->title,
@@ -83,7 +83,7 @@ class CategoryController extends Controller
                 'description' => $request->description,
                 'parent_id' => $request->parent_category
             ]);
-            // jika berhasil arahkan ke
+            // jika berhasil kirim notif dan arahkan ke
             Alert::toast(trans('categories.alert.create.message.success'), 'success');
             return redirect()->route('categories.index');
         } catch (\Throwable $th) {
@@ -91,7 +91,7 @@ class CategoryController extends Controller
                 $request['parent_category'] = Category::select('id', 'title')->find($request->parent_category);
             }
             Alert::toast(trans('categories.alert.create.message.error', ['error' => $th->getMessage()]), 'error');
-            return redirect()->back()->withInput($request->all())->withErrors($validator);
+            return redirect()->back()->withInput($request->all());
         }
     }
 
@@ -146,6 +146,26 @@ class CategoryController extends Controller
             }
             Alert::toast(trans('categories.alert.required.message.error'), 'error');
             return redirect()->back()->withInput($request->all())->withErrors($validator);
+        }
+
+        // coba edit data
+        try {
+            $category->update([
+                'title' => $request->title,
+                'slug' => $request->slug,
+                'thumbnail' => parse_url($request->thumbnail)['path'],
+                'description' => $request->description,
+                'parent_id' => $request->parent_category
+            ]);
+            // jika berhasil kirim dan notif arahkan ke
+            Alert::toast(trans('categories.alert.update.message.success'), 'success');
+            return redirect()->route('categories.index');
+        } catch (\Throwable $th) {
+            if ($request->has('parent_category')) {
+                $request['parent_category'] = Category::select('id', 'title')->find($request->parent_category);
+            }
+            Alert::toast(trans('categories.alert.update.message.error', ['error' => $th->getMessage()]), 'error');
+            return redirect()->back()->withInput($request->all());
         }
     }
 

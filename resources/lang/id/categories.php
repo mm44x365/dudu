@@ -81,7 +81,7 @@ return [
         'required' => [
             'title' => 'Add category',
             'message' => [
-                'error' => "Periksa inputan wajib diisi."
+                'error' => "Periksa kembali inputan."
             ]
         ],
         'update' => [
