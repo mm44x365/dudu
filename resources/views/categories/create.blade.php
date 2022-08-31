@@ -86,8 +86,9 @@
                             <label for="input_category_description" class="font-weight-bold">
                                 {{ trans('categories.form_control.textarea.description.label') }}
                             </label>
-                            <textarea id="input_category_description" name="description" class="form-control @error('title') is-invalid @enderror"
-                                rows="3" placeholder="{{ trans('categories.form_control.textarea.description.placeholder') }}">{{ old('description') }}</textarea>
+                            <textarea id="input_category_description" name="description"
+                                class="form-control @error('description') is-invalid @enderror" rows="3"
+                                placeholder="{{ trans('categories.form_control.textarea.description.placeholder') }}">{{ old('description') }}</textarea>
                             @error('description')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
