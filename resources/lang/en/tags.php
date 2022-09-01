@@ -61,6 +61,12 @@ return [
                 'error' => "An error occurred while saving the tag. :error"
             ]
         ],
+        'required' => [
+            'title' => 'Add tag',
+            'message' => [
+                'error' => "Please check all input."
+            ]
+        ],
         'update' => [
             'title' => 'Edit tag',
             'message' => [

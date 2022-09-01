@@ -61,6 +61,12 @@ return [
                 'error' => "Terjadi kesalahan saat menyimpan tag. :error"
             ]
         ],
+        'required' => [
+            'title' => 'Add tag',
+            'message' => [
+                'error' => "Periksa kembali inputan."
+            ]
+        ],
         'update' => [
             'title' => 'Ubah tag',
             'message' => [
