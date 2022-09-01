@@ -141,7 +141,14 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
-        //
+        try {
+            $tag->delete();
+            Alert::toast(trans('tags.alert.delete.message.success'), 'success');
+        } catch (\Throwable $th) {
+            Alert::toast(trans('tags.alert.delete.message.error', ['error' => $th->getMessage()]), 'error');
+        }
+
+        return redirect()->back();
     }
     private function getAttributes()
     {
