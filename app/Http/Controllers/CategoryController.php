@@ -24,7 +24,7 @@ class CategoryController extends Controller
             $categories->onlyParent();
         }
         return view('categories.index', [
-            'categories' => $categories->get()
+            'categories' => $categories->paginate(5)->appends(['keyword' => $request->get('keyword')])
         ]);
     }
 
