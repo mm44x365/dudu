@@ -101,7 +101,36 @@ class TagController extends Controller
      */
     public function update(Request $request, Tag $tag)
     {
-        //
+        // cek validasi inputan data
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'title' => 'required|string|max:25',
+                'slug' => 'required|string|unique:tags,slug,' . $tag->id
+            ],
+            [],
+            $this->getAttributes()
+        );
+
+        // jika validasi ada yang salah
+        if ($validator->fails()) {
+            Alert::toast(trans('tags.alert.required.message.error'), 'error');
+            return redirect()->back()->withInput($request->all())->withErrors($validator);
+        }
+
+        // coba simpan data
+        try {
+            $tag->update([
+                'title' => $request->title,
+                'slug' => $request->slug,
+            ]);
+            // jika berhasil kirim notif dan arahkan ke
+            Alert::toast(trans('tags.alert.update.message.success'), 'success');
+            return redirect()->route('tags.index');
+        } catch (\Throwable $th) {
+            Alert::toast(trans('tags.alert.update.message.error', ['error' => $th->getMessage()]), 'error');
+            return redirect()->back()->withInput($request->all());
+        }
     }
 
     /**
