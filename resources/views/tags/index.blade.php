@@ -49,7 +49,8 @@
                                     </label>
                                     <div>
                                         <!-- edit -->
-                                        <a class="btn btn-sm btn-info" role="button">
+                                        <a href="{{ route('tags.edit', ['tag' => $tag]) }}" class="btn btn-sm btn-info"
+                                            role="button">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <!-- delete -->
