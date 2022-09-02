@@ -101,9 +101,6 @@
                         event.target.submit();
                     }
                 });
-
-
-
             });
         });
     </script>
