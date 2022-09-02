@@ -85,8 +85,7 @@
                                     </label>
                                     <select id="select_post_tag" name="tag" data-placeholder=""
                                         class="custom-select w-100" multiple>
-                                        <option value="tag1">tag 1</option>
-                                        <option value="tag2">tag 2</option>
+
                                     </select>
                                 </div>
                                 <!-- status -->
@@ -118,6 +117,11 @@
         </div>
     </div>
 @endsection
+@push('css-external')
+    {{-- select2 --}}
+    <link rel="stylesheet" href="{{ asset('vendor/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/select2/css/select2-bootstrap4.min.css') }}">
+@endpush
 
 @push('javascript-external')
     {{-- filemanager --}}
@@ -125,6 +129,9 @@
     {{-- tinymce5 --}}
     <script src="{{ asset('vendor/tinymce5/jquery.tinymce.min.js') }}"></script>
     <script src="{{ asset('vendor/tinymce5/tinymce.min.js') }}"></script>
+    {{-- select2 --}}
+    <script src="{{ asset('vendor/select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('vendor/select2/js/i18n/' . app()->getLocale() . '.js') }}"></script>
 @endpush
 
 @push('javascript-internal')
@@ -182,8 +189,30 @@
                         }
                     });
                 }
-
             });
-        })
+
+            //select2 tag
+            $('#select_post_tag').select2({
+                theme: 'bootstrap4',
+                language: "{{ app()->getLocale() }}",
+                allowClear: true,
+                ajax: {
+                    url: "{{ route('tags.select') }}",
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function(data) {
+                        return {
+                            results: $.map(data, function(item) {
+                                return {
+                                    text: item.title,
+                                    id: item.id
+                                }
+                            })
+                        };
+                    }
+                }
+            });
+
+        });
     </script>
 @endpush
