@@ -121,3 +121,21 @@
         </div>
     </div>
 @endsection
+
+@push('javascript-internal')
+    <script>
+        $(document).ready(function() {
+            // event input slug
+            $("#input_post_title").change(function(event) {
+                $("#input_post_slug").val(
+                    event.target.value
+                    .trim()
+                    .toLowerCase()
+                    .replace(/[^a-z\d-]/gi, "-")
+                    .replace(/-+/g, "-")
+                    .replace(/^-|-$/g, "")
+                );
+            });
+        })
+    </script>
+@endpush
