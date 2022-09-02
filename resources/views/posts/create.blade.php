@@ -94,8 +94,9 @@
                                         {{ trans('posts.form_control.select.status.label') }}
                                     </label>
                                     <select id="select_post_status" name="status" class="custom-select">
-                                        <option value="draft">Draft</option>
-                                        <option value="publish">Publish</option>
+                                        @foreach ($statuses as $key => $value)
+                                            <option value="{{ $key }}">{{ $value }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
