@@ -24,7 +24,8 @@ class TagController extends Controller
     {
         $tags = [];
         if ($request->has('q')) {
-            $tags = Tag::select('id', 'title')->search($request->q)->get();
+            $search = $request->q;
+            $tags = Tag::select('id', 'title')->where('title', 'LIKE', "%$search%")->get();
         } else {
             $tags = Tag::select('id', 'title')->limit(5)->get();
         }
