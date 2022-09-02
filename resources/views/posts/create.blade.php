@@ -38,7 +38,7 @@
                                         <div class="input-group-prepend">
                                             <button id="button_post_thumbnail" data-input="input_post_thumbnail"
                                                 class="btn btn-primary" type="button">
-                                                {{ trans('posts.button.back.value') }}
+                                                {{ trans('posts.button.browse.value') }}
                                             </button>
                                         </div>
                                         <input id="input_post_thumbnail" name="thumbnail" value="" type="text"
@@ -122,6 +122,11 @@
     </div>
 @endsection
 
+@push('javascript-external')
+    {{-- filemanager --}}
+    <script src="{{ asset('vendor/laravel-filemanager/js/stand-alone-button.js') }}"></script>
+@endpush
+
 @push('javascript-internal')
     <script>
         $(document).ready(function() {
@@ -136,6 +141,9 @@
                     .replace(/^-|-$/g, "")
                 );
             });
+
+            //event input thumbnail
+            $('#button_post_thumbnail').filemanager('image');
         })
     </script>
 @endpush
