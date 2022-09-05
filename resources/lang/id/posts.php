@@ -58,6 +58,7 @@ return [
                 'placeholder' => 'Pilih status',
                 'attribute' => 'status',
                 'option' => [
+                    'all' => 'Semua',
                     'draft' => 'Draft',
                     'publish' => 'Terbitkan',
                 ]

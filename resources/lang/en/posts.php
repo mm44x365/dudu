@@ -58,6 +58,7 @@ return [
                 'placeholder' => 'Choose status',
                 'attribute' => 'status',
                 'option' => [
+                    'all' => 'All',
                     'draft' => 'Draft',
                     'publish' => 'Publish',
                 ]

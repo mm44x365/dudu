@@ -20,11 +20,26 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $statusSelected = in_array($request->get('status'), ['publish', 'draft']) ? $request->get('status') : "publish";
-        $posts = $statusSelected == "publish" ? Post::publish() : Post::draft();
+        $statusSelected = in_array($request->get('status'), ['all', 'publish', 'draft']) ? $request->get('status') : "all";
+        switch ($statusSelected) {
+            case 'publish':
+                $posts = Post::publish()->paginate(10)->withQueryString();
+                break;
+            case 'draft':
+                $posts = Post::draft()->paginate(10)->withQueryString();
+                break;
+
+            default:
+                $posts = Post::paginate(10)->withQueryString();
+                break;
+        }
+        if ($request->get('keyword')) {
+            // $posts->search($request->get('keyword'));
+            $posts = Post::search($request->get('keyword'))->get();
+        }
         return view('posts.index', [
-            'posts' => $posts->get(),
-            'statuses' => $this->statuses(),
+            'posts' => $posts,
+            'statuses' => $this->statusesSearch(),
             'statusSelected' => $statusSelected
         ]);
     }
@@ -216,6 +231,15 @@ class PostController extends Controller
     private function statuses()
     {
         return [
+            'draft' => trans('posts.form_control.select.status.option.draft'),
+            'publish' => trans('posts.form_control.select.status.option.publish'),
+        ];
+    }
+
+    private function statusesSearch()
+    {
+        return [
+            'all' => trans('posts.form_control.select.status.option.all'),
             'draft' => trans('posts.form_control.select.status.option.draft'),
             'publish' => trans('posts.form_control.select.status.option.publish'),
         ];
