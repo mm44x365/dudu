@@ -7,6 +7,9 @@ use App\Models\Category;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Alert;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -62,7 +65,34 @@ class PostController extends Controller
             if ($request['tag']) {
                 $request['tag'] = Tag::select('id', 'title')->whereIn('id', $request->tag)->get();
             }
+            Alert::toast(trans('categories.alert.required.message.error'), 'error');
             return redirect()->back()->withInput($request->all())->withErrors($validator);
+        }
+
+        DB::beginTransaction();
+        try {
+            $post = Post::create([
+                "title" => $request->title,
+                "slug" => $request->slug,
+                "thumbnail" => parse_url($request->thumbnail)['path'],
+                "description" => $request->description,
+                "content" => $request->content,
+                "status" => $request->status,
+                "user_id" => Auth::user()->id,
+            ]);
+            $post->tags()->attach($request->tag);
+            $post->categories()->attach($request->category);
+            Alert::toast(trans('posts.alert.create.message.success'), 'success');
+            return redirect()->route('posts.index');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Alert::toast(trans('posts.alert.create.message.error', ['error' => $th->getMessage()]), 'error');
+            if ($request['tag']) {
+                $request['tag'] = Tag::select('id', 'title')->whereIn('id', $request->tag)->get();
+            }
+            return redirect()->back()->withInput($request->all());
+        } finally {
+            DB::commit();
         }
     }
 
@@ -74,7 +104,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        $categories = $post->categories;
+        $tags = $post->tags;
+        return view('posts.detail', compact('post', 'categories', 'tags'));
     }
 
     /**

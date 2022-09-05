@@ -76,6 +76,13 @@ Breadcrumbs::for('add_posts', function ($trail) {
     $trail->push('Add', route('posts.create'));
 });
 
+// Dashboard > Posts > Detail > [title]
+Breadcrumbs::for('detail_posts', function ($trail, $post) {
+    $trail->parent('posts');
+    $trail->push('Detail', route('posts.show', ['post' => $post]));
+    $trail->push($post->title, route('posts.show', ['post' => $post]));
+});
+
 // // Home > About
 // Breadcrumbs::for('about', function ($trail) {
 //     $trail->parent('home');

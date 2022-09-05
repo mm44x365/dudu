@@ -52,7 +52,7 @@
                     <ul class="list-group list-group-flush">
                         <!-- list post -->
                         @forelse ($posts as $post)
-                            <div class="card">
+                            <div class="card my-2">
                                 <div class="card-body">
                                     <h5>{{ $post->title }}</h5>
                                     <p>
@@ -61,7 +61,8 @@
                                     </p>
                                     <div class="float-right">
                                         <!-- detail -->
-                                        <a href="#" class="btn btn-sm btn-primary" role="button">
+                                        <a href="{{ route('posts.show', ['post' => $post]) }}" class="btn btn-sm btn-primary"
+                                            role="button">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         <!-- edit -->
