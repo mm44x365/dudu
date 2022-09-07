@@ -90,6 +90,12 @@ Breadcrumbs::for('edit_posts', function ($trail, $post) {
     $trail->push($post->title, route('posts.show', ['post' => $post]));
 });
 
+// Dashboard > File Namager
+Breadcrumbs::for('file_manager', function ($trail) {
+    $trail->parent('dashboard');
+    $trail->push('File Manager', route('filemanager.index'));
+});
+
 // // Home > About
 // Breadcrumbs::for('about', function ($trail) {
 //     $trail->parent('home');
