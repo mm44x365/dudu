@@ -96,10 +96,16 @@ Breadcrumbs::for('file_manager', function ($trail) {
     $trail->push('File Manager', route('filemanager.index'));
 });
 
-// Dashboard > Role
+// Dashboard > Roles
 Breadcrumbs::for('roles', function ($trail) {
     $trail->parent('dashboard');
     $trail->push('Roles', route('roles.index'));
+});
+
+// Dashboard > Role
+Breadcrumbs::for('add_role', function ($trail) {
+    $trail->parent('roles');
+    $trail->push('Add', route('roles.create'));
 });
 
 // Dashboard > Roles > Detail > [name]
