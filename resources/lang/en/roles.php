@@ -58,14 +58,14 @@ return [
         'create' => [
             'title' => 'Add role',
             'message' => [
-                'success' => "Category saved successfully.",
+                'success' => "Role saved successfully.",
                 'error' => "An error occurred while saving the role. :error"
             ]
         ],
         'update' => [
             'title' => 'Edit role',
             'message' => [
-                'success' => "Category updated successfully.",
+                'success' => "Role updated successfully.",
                 'error' => "An error occurred while updating the role. :error"
             ]
         ],
@@ -73,7 +73,7 @@ return [
             'title' => 'Delete role',
             'message' => [
                 'confirm' => "Are you sure you want to delete the :name role?",
-                'success' => "Category deleted successfully.",
+                'success' => "Role deleted successfully.",
                 'error' => "An error occurred while deleting the role. :error"
             ]
         ],
