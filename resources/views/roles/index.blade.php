@@ -15,9 +15,11 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-md-6">
-                            <form action="" method="GET">
+                            <form action="{{ route('roles.index') }}" method="GET">
                                 <div class="input-group">
-                                    <input name="keyword" type="search" class="form-control" placeholder="Search for roles">
+                                    <input name="keyword" value="{{ request()->get('keyword') }}" type="search"
+                                        class="form-control"
+                                        placeholder="{{ trans('roles.form_control.input.search.placeholder') }}">
                                     <div class="input-group-append">
                                         <button class="btn btn-primary" type="submit">
                                             <i class="fas fa-search"></i>
@@ -69,7 +71,11 @@
                             </li>
                         @empty
                             <p>
-                                <strong>{{ trans('roles.label.no_data.fetch') }}</strong>
+                                @if (request()->get('keyword'))
+                                    <strong>{{ trans('roles.label.no_data.search', ['keyword' => request()->get('keyword')]) }}</strong>
+                                @else
+                                    <strong>{{ trans('roles.label.no_data.fetch') }}</strong>
+                                @endif
                             </p>
                         @endforelse
                         <!-- list role -->
