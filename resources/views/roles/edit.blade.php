@@ -1,9 +1,9 @@
 @extends('layouts.dashboard')
 @section('title')
-    {{ trans('roles.title.create') }}
+    {{ trans('roles.title.edit') }}
 @endsection
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('add_role') }}
+    {{ Breadcrumbs::render('edit_role', $role) }}
 @endsection
 @section('content')
     <div class="row">
@@ -16,7 +16,7 @@
                             <label for="input_role_name" class="font-weight-bold">
                                 {{ trans('roles.form_control.input.name.label') }}
                             </label>
-                            <input id="input_role_name" value="{{ old('name') }}" name="name" type="text"
+                            <input id="input_role_name" value="{{ old('name', $role->name) }}" name="name" type="text"
                                 class="form-control @error('name') is-invalid @enderror" />
                             @error('name')
                                 <span class="invalid-feedback">
@@ -42,11 +42,11 @@
                                             @foreach ($permissions as $permission)
                                                 <li class="list-group-item">
                                                     <div class="form-check">
-                                                        @if (old('permissions'))
+                                                        @if (old('permission', $permissionChecked))
                                                             <input id="{{ $permission }}" name="permissions[]"
                                                                 class="form-check-input" type="checkbox"
                                                                 value="{{ $permission }}"
-                                                                {{ in_array($permission, old('permissions')) ? 'checked' : null }}>
+                                                                {{ in_array($permission, old('permissions', $permissionChecked)) ? 'checked' : null }}>
                                                         @else
                                                             <input id="{{ $permission }}" name="permissions[]"
                                                                 class="form-check-input" type="checkbox"
@@ -76,7 +76,7 @@
                                 {{ trans('roles.button.back.value') }}
                             </a>
                             <button type="submit" class="btn btn-primary px-4">
-                                {{ trans('roles.button.save.value') }}
+                                {{ trans('roles.button.edit.value') }}
                             </button>
                         </div>
                     </div>
