@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Spatie\Permission\Models\Role;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -166,6 +167,12 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        // validasi adakah user
+        if (User::role($role->name)->count()) {
+            Alert::toast(trans('roles.alert.delete.message.warning', ['name' => $role->name]), 'warning');
+            return redirect()->route('roles.index');
+        }
+
         DB::beginTransaction();
         try {
             $role->revokePermissionTo($role->permissions->pluck('name')->toArray());
