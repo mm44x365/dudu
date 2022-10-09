@@ -45,5 +45,5 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['web', 'auth']], functio
     Route::get('/roles/select', [\App\Http\Controllers\RoleController::class, 'select'])->name('roles.select');
     Route::resource('/roles', \App\Http\Controllers\RoleController::class);
     // User
-    Route::resource('/users', \App\Http\Controllers\UserController::class);
+    Route::resource('/users', \App\Http\Controllers\UserController::class)->except(['show']);
 });

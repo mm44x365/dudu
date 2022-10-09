@@ -98,7 +98,10 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('users.edit', [
+            'user' => $user,
+            'roleSelected' => $user->roles->first()
+        ]);
     }
 
     /**
@@ -110,7 +113,34 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+
+        $validator  = Validator::make(
+            $request->all(),
+            [
+                'role' => 'required',
+            ],
+            [],
+            $this->attributes()
+        );
+
+        if ($validator->fails()) {
+            $request['role'] = Role::select('id', 'name')->find($request->role);
+            return redirect()->back()->withInput($request->all())->withErrors($validator);
+        }
+
+        DB::beginTransaction();
+        try {
+            $user->syncRoles($request->role);
+            Alert::toast(trans('users.alert.update.message.success'), 'success');
+            return redirect()->route('users.index');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Alert::toast(trans('users.alert.update.message.error'), 'error');
+            $request['role'] = Role::select('id', 'name')->find($request->role);
+            return redirect()->back()->withInput($request->all())->withErrors($validator);
+        } finally {
+            DB::commit();
+        }
     }
 
     /**
@@ -121,7 +151,18 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $user->removeRole($user->roles->first());
+            $user->delete();
+            Alert::toast(trans('users.alert.delete.message.success'), 'success');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Alert::toast(trans('users.alert.delete.message.error'), 'error');
+        } finally {
+            DB::commit();
+            return redirect()->back();
+        }
     }
 
     private function attributes()

@@ -98,7 +98,7 @@
                             <!-- error message -->
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-warning px-4 mx-2" href="">
+                            <a class="btn btn-warning px-4 mx-2" href="{{ route('users.index') }}">
                                 {{ trans('users.button.back.value') }}
                             </a>
                             <button type="submit" class="btn btn-primary float-right px-4">
