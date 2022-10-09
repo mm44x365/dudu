@@ -14,7 +14,8 @@
                         <div class="col-md-6">
                             <form action="" method="GET">
                                 <div class="input-group">
-                                    <input name="keyword" value="" type="search" class="form-control" placeholder="">
+                                    <input name="keyword" value="{{ request()->get('keyword') }}" type="search"
+                                        class="form-control" placeholder="">
                                     <div class="input-group-append">
                                         <button class="btn btn-primary" type="submit">
                                             <i class="fas fa-search"></i>
@@ -99,15 +100,22 @@
                         @empty
                             <span>
                                 <strong>
-                                    {{ trans('users.label.no_data.fetch') }}
+                                    @if (request()->get('keyword'))
+                                        {{ trans('users.label.no_data.search', ['keyword' => request()->get('keyword')]) }}
+                                    @else
+                                        {{ trans('users.label.no_data.fetch') }}
+                                    @endif
                                 </strong>
                             </span>
                         @endforelse
                     </div>
                 </div>
-                <div class="card-footer">
-                    <!-- Todo:paginate -->
-                </div>
+                @if ($users->hasPages())
+                    <div class="card-footer">
+                        <!-- Todo:paginate -->
+                        {{ $users->links('vendor.pagination.bootstrap-4') }}
+                    </div>
+                @endif
             </div>
         </div>
     </div>

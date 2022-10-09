@@ -12,15 +12,22 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+    private $perPage = 6;
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $users = [];
+        if ($request->get('keyword')) {
+            $users = User::search($request->keyword)->paginate($this->perPage);
+        } else {
+            $users =  User::paginate($this->perPage);
+        }
         return view('users.index', [
-            'users' => User::all()
+            'users' => $users->appends(['keyword' => $request->keyword])
         ]);
     }
 
