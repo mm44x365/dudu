@@ -13,13 +13,6 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-    // 'manage_posts' => [
-    //     'post_show',
-    //     'post_create',
-    //     'post_update',
-    //     'post_detail',
-    //     'post_delete'
-    // ],
     public function __construct()
     {
         $this->middleware('permission:post_show', ['only' => 'index']);
