@@ -25,6 +25,14 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('manage_posts', function ($user) {
+            return $user->hasAnyPermission([
+                'post_show',
+                'post_create',
+                'post_update',
+                'post_detail',
+                'post_delete'
+            ]);
+        });
     }
 }

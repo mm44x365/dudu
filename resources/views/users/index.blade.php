@@ -25,10 +25,13 @@
                             </form>
                         </div>
                         <div class="col-md-6">
-                            <a href="{{ route('users.create') }}" class="btn btn-primary float-right" role="button">
-                                {{ trans('users.button.create.value') }}
-                                <i class="fas fa-plus-square"></i>
-                            </a>
+                            {{-- add post --}}
+                            @can('post_create')
+                                <a href="{{ route('users.create') }}" class="btn btn-primary float-right" role="button">
+                                    {{ trans('users.button.create.value') }}
+                                    <i class="fas fa-plus-square"></i>
+                                </a>
+                            @endcan
                         </div>
                     </div>
                 </div>
