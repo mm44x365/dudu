@@ -36,6 +36,19 @@ Breadcrumbs::for('blog_posts_category', function ($trail, $title) {
     $trail->push('Categories', route('blog.categories'));
     $trail->push($title, '#');
 });
+
+// Blog > Tags > [Title]
+Breadcrumbs::for('blog_posts_tag', function ($trail, $title) {
+    $trail->parent('blog');
+    $trail->push('Tags', route('blog.tags'));
+    $trail->push($title, '#');
+});
+
+// Blog > Posts > [Title]
+Breadcrumbs::for('blog_posts', function ($trail, $title) {
+    $trail->parent('blog');
+    $trail->push($title, '#');
+});
 // ============= Dashboard
 // Dashboard
 Breadcrumbs::for('dashboard', function ($trail) {

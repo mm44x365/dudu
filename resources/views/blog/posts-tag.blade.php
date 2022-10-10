@@ -1,15 +1,15 @@
 @extends('layouts.blog')
 @section('title')
-    {{ trans('blog.title.category', ['title' => $category->title]) }}
+    {{ trans('blog.title.tag', ['title' => $tag->title]) }}
 @endsection
 @section('content')
     <!-- Title -->
     <h2 class="mt-4 mb-3">
-        {{ trans('blog.title.category', ['title' => $category->title]) }}
+        {{ trans('blog.title.tag', ['title' => $tag->title]) }}
     </h2>
 
     <!-- Breadcrumb:start -->
-    {{ Breadcrumbs::render('blog_posts_category', $category->title) }}
+    {{ Breadcrumbs::render('blog_posts_tag', $tag->title) }}
     <!-- Breadcrumb:end -->
     <div class="row">
         <div class="col-lg-8">
@@ -33,7 +33,7 @@
                             <div class="col-lg-6">
                                 <h2 class="card-title">{{ $post->title }}</h2>
                                 <p class="card-text">{{ $post->description }}</p>
-                                <a href="" class="btn btn-primary">
+                                <a href="{{ route('blog.posts.detail', ['slug' => $post->slug]) }}" class="btn btn-primary">
                                     {{ trans('blog.button.read_more.value') }}
                                 </a>
                             </div>
@@ -49,34 +49,19 @@
             <!-- Post list:end -->
         </div>
         <div class="col-md-4">
-            <!-- Categories list:start -->
+            <!-- Tags list:start -->
             <div class="card mb-1">
                 <h5 class="card-header">
-                    {{ trans('blog.widget.categories') }}
+                    {{ trans('blog.widget.tags') }}
                 </h5>
                 <div class="card-body">
-                    <ul class="list-unstyled">
-                        <li>
-                            @if ($category->slug == $categoryRoot->slug)
-                                {{ $categoryRoot->title }}
-                            @else
-                                <a href="{{ route('blog.posts.category', ['slug' => $categoryRoot->slug]) }}">
-                                    {{ $categoryRoot->title }}
-                                </a>
-                            @endif
-                            <!-- category descendants:start -->
-                            @if ($categoryRoot->descendants)
-                                @include('blog.sub-categories', [
-                                    'categoryRoot' => $categoryRoot->descendants,
-                                    'category' => $category,
-                                ])
-                            @endif
-                            <!-- category descendants:end -->
-                        </li>
-                    </ul>
+                    @foreach ($tags as $tag)
+                        <a href="{{ route('blog.posts.tag', ['slug' => $tag->slug]) }}"
+                            class="badge badge-info py-3 px-5 my-1">#{{ $tag->title }}</a>
+                    @endforeach
                 </div>
             </div>
-            <!-- Categories list:end -->
+            <!-- Tags list:end -->
         </div>
     </div>
     <!-- pagination:start -->

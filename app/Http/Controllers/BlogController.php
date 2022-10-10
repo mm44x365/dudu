@@ -36,7 +36,7 @@ class BlogController extends Controller
         if (!$request->get('keyword')) {
             return redirect()->route('blog.home');
         }
-        return view('blog.search_post', [
+        return view('blog.search-post', [
             'posts' => Post::publish()->search($request->keyword)->paginate($this->perpage)->appends(['keyword' => $request->keyword])
         ]);
     }
@@ -51,10 +51,39 @@ class BlogController extends Controller
 
         $categoryRoot = $category->root();
 
-        return view('blog.post-category', [
+        return view('blog.posts-category', [
             'posts' => $posts,
             'category' => $category,
             'categoryRoot' => $categoryRoot,
+        ]);
+    }
+
+    public function showPostsByTag($slug)
+    {
+        $posts = Post::publish()->whereHas('tags', function ($query) use ($slug) {
+            return $query->where('slug', $slug);
+        })->paginate($this->perpage);
+
+        $tag = Tag::where('slug', $slug)->first();
+
+        $tags = Tag::search($tag->title)->get();
+
+        return view('blog.posts-tag', [
+            'posts' => $posts,
+            'tag' => $tag,
+            'tags' => $tags,
+        ]);
+    }
+
+    public function showPostDetail($slug)
+    {
+        $post = Post::publish()->with(['categories', 'tags'])->where('slug', $slug)->first();
+        if (!$post) {
+            return redirect()->route('blog.home');
+        }
+
+        return view('blog.post-detail', [
+            'post' => $post,
         ]);
     }
 }

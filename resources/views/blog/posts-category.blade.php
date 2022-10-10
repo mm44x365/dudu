@@ -1,18 +1,18 @@
 @extends('layouts.blog')
 @section('title')
-    {{ trans('blog.title.home') }}
+    {{ trans('blog.title.category', ['title' => $category->title]) }}
 @endsection
 @section('content')
-    <!-- page title -->
-    <h2 class="my-3">
-        {{ trans('blog.title.home') }}
+    <!-- Title -->
+    <h2 class="mt-4 mb-3">
+        {{ trans('blog.title.category', ['title' => $category->title]) }}
     </h2>
-    <!-- Breadcrumbs:start -->
-    {{ Breadcrumbs::render('blog_home') }}
-    <!-- Breadcrumbs:end -->
 
+    <!-- Breadcrumb:start -->
+    {{ Breadcrumbs::render('blog_posts_category', $category->title) }}
+    <!-- Breadcrumb:end -->
     <div class="row">
-        <div class="col">
+        <div class="col-lg-8">
             <!-- Post list:start -->
             @forelse ($posts as $post)
                 <div class="card mb-4">
@@ -48,8 +48,37 @@
             @endforelse
             <!-- Post list:end -->
         </div>
+        <div class="col-md-4">
+            <!-- Categories list:start -->
+            <div class="card mb-1">
+                <h5 class="card-header">
+                    {{ trans('blog.widget.categories') }}
+                </h5>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li>
+                            @if ($category->slug == $categoryRoot->slug)
+                                {{ $categoryRoot->title }}
+                            @else
+                                <a href="{{ route('blog.posts.category', ['slug' => $categoryRoot->slug]) }}">
+                                    {{ $categoryRoot->title }}
+                                </a>
+                            @endif
+                            <!-- category descendants:start -->
+                            @if ($categoryRoot->descendants)
+                                @include('blog.sub-categories', [
+                                    'categoryRoot' => $categoryRoot->descendants,
+                                    'category' => $category,
+                                ])
+                            @endif
+                            <!-- category descendants:end -->
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Categories list:end -->
+        </div>
     </div>
-
     <!-- pagination:start -->
     @if ($posts->hasPages())
         <div class="row">
