@@ -26,7 +26,7 @@
                         </div>
                         <div class="col-md-6">
                             {{-- add post --}}
-                            @can('post_create')
+                            @can('user_create')
                                 <a href="{{ route('users.create') }}" class="btn btn-primary float-right" role="button">
                                     {{ trans('users.button.create.value') }}
                                     <i class="fas fa-plus-square"></i>
@@ -82,20 +82,24 @@
                                         </div>
                                         <div class="float-right">
                                             <!-- edit -->
-                                            <a href="{{ route('users.edit', ['user' => $user]) }}"
-                                                class="btn btn-sm btn-info" role="button">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
+                                            @can('user_edit')
+                                                <a href="{{ route('users.edit', ['user' => $user]) }}"
+                                                    class="btn btn-sm btn-info" role="button">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            @endcan
                                             <!-- delete -->
-                                            <form class="d-inline" role="alert"
-                                                action="{{ route('users.destroy', ['user' => $user]) }}" method="POST"
-                                                alert-text="{{ trans('users.alert.delete.message.confirm', ['name' => $user->name]) }}">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </form>
+                                            @can('user_delete')
+                                                <form class="d-inline" role="alert"
+                                                    action="{{ route('users.destroy', ['user' => $user]) }}" method="POST"
+                                                    alert-text="{{ trans('users.alert.delete.message.confirm', ['name' => $user->name]) }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            @endcan
                                         </div>
                                     </div>
                                 </div>

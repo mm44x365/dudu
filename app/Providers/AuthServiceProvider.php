@@ -51,5 +51,14 @@ class AuthServiceProvider extends ServiceProvider
                 'tag_delete'
             ]);
         });
+        Gate::define('manage_users', function ($user) {
+            return $user->hasAnyPermission([
+                'user_show',
+                'user_create',
+                'user_update',
+                'user_detail',
+                'user_delete'
+            ]);
+        });
     }
 }
