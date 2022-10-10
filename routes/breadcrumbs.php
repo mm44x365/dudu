@@ -5,10 +5,16 @@ Breadcrumbs::for('blog', function ($trail) {
     $trail->push('Blog', route('blog.home'));
 });
 
-// Dashboard > Home
+// Blog > Home
 Breadcrumbs::for('blog_home', function ($trail) {
     $trail->parent('blog');
     $trail->push('Home', route('blog.home'));
+});
+
+// Blog > Categories
+Breadcrumbs::for('blog_categories', function ($trail) {
+    $trail->parent('blog');
+    $trail->push('Categories', route('blog.categories'));
 });
 
 // ============= Dashboard
