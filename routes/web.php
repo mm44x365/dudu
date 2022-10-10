@@ -20,6 +20,7 @@ Route::get('/localization/{language}', [\App\Http\Controllers\LocalizationContro
 
 Route::get('/', [\App\Http\Controllers\BlogController::class, 'home'])->name('blog.home');
 Route::get('/categories', [\App\Http\Controllers\BlogController::class, 'showCategories'])->name('blog.categories');
+Route::get('/tags', [\App\Http\Controllers\BlogController::class, 'showTags'])->name('blog.tags');
 
 Auth::routes([
     'register' => false
