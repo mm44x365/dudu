@@ -30,6 +30,12 @@ Breadcrumbs::for('blog_search', function ($trail, $keyword) {
     $trail->push($keyword, route('blog.search'));
 });
 
+// Blog > Categories > [Title]
+Breadcrumbs::for('blog_posts_category', function ($trail, $title) {
+    $trail->parent('blog');
+    $trail->push('Categories', route('blog.categories'));
+    $trail->push($title, '#');
+});
 // ============= Dashboard
 // Dashboard
 Breadcrumbs::for('dashboard', function ($trail) {

@@ -35,4 +35,9 @@ class Category extends Model
     {
         return $this->childern()->with('descendants');
     }
+
+    public function root()
+    {
+        return $this->parent ? $this->parent->root() : $this;
+    }
 }
