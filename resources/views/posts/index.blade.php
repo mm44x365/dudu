@@ -74,7 +74,7 @@
                                             </a>
                                         @endcan
                                         <!-- edit -->
-                                        @can('post_edit')
+                                        @can('post_update')
                                             <a href="{{ route('posts.edit', ['post' => $post]) }}" class="btn btn-sm btn-info"
                                                 role="button">
                                                 <i class="fas fa-edit"></i>
