@@ -1,6 +1,8 @@
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="">App name</a>
+        <a class="navbar-brand" href="{{ route('blog.home') }}">
+            {{ config('app.name') }}
+        </a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
             data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
             aria-label="Toggle navigation">
@@ -20,63 +22,74 @@
             <ul class="navbar-nav ml-auto">
                 <!-- nav-home:start -->
                 <li class="nav-item">
-                    <a class="nav-link" href="">
-                        Home
+                    <a class="nav-link" href="{{ route('blog.home') }}">
+                        {{ trans('blog.menu.home') }}
                     </a>
                 </li>
                 <!-- nav-home:end -->
                 <!-- nav-categories:start -->
                 <li class="nav-item">
                     <a class="nav-link" href="">
-                        Categories
+                        {{ trans('blog.menu.categories') }}
                     </a>
                 </li>
                 <!-- nav-categories:tags -->
                 <li class="nav-item">
                     <a class="nav-link" href="">
-                        Tags
+                        {{ trans('blog.menu.tags') }}
                     </a>
                 </li>
                 <!-- nav-tags:end -->
                 <!-- Auth:start -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Username
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPortfolio">
-                        <a class="dropdown-item" href="">
-                            Dashboard
+                @auth
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ auth()->user()->name }}
                         </a>
-                        <a class="dropdown-item" href=""
-                            onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                            Logout
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPortfolio">
+                            <a class="dropdown-item" href="{{ route('dashboard.index') }}">
+                                {{ trans('blog.menu.dashboard') }}
+                            </a>
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                Logout
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                <!-- csrf -->
+                                @csrf
+                            </form>
+                        </div>
+                    </li>
+                @else
+                    <!-- Auth:else -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">
+                            Login
                         </a>
-                        <form id="logout-form" action="" method="POST" class="d-none">
-                            <!-- csrf -->
-                        </form>
-                    </div>
-                </li>
-                <!-- Auth:else -->
-                <li class="nav-item">
-                    <a class="nav-link" href="">
-                        Login
-                    </a>
-                </li>
+                    </li>
+                @endauth
                 <!-- Auth:end -->
                 <!-- lang:start -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="flag-icon flag-icon-id"></i>
-                        <i class="flag-icon flag-icon-gb"></i>
+                        @switch(app()->getLocale())
+                            @case('id')
+                                <i class="flag-icon flag-icon-id"></i>
+                            @break
+
+                            @case('en')
+                                <i class="flag-icon flag-icon-gb"></i>
+                            @break
+                        @endswitch
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPortfolio">
-                        <a class="dropdown-item" href="">
-                            ID
+                        <a class="dropdown-item" href="{{ route('localization.switch', ['language' => 'id']) }}">
+                            {{ trans('localization.id') }}
                         </a>
-                        <a class="dropdown-item" href="">
-                            EN
+                        <a class="dropdown-item" href="{{ route('localization.switch', ['language' => 'en']) }}">
+                            {{ trans('localization.en') }}
                         </a>
                     </div>
                 </li>
